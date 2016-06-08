@@ -8,10 +8,9 @@ def download_page(url):
     d = pq(url)
     return d.html()
 
-def write_file(llist,filepath='acfun/acfun/ac_url_list.txt'):
+def write_file(llist,filepath='AcFunComment/AcFunComment/ac_url_list.txt'):
     file_object = codecs.open(filepath,'w','utf-8')
-    for url in llist:
-        page_id = re.findall('[0-9]+',url)[0]
+    for page_id in llist:
         file_object.write(page_id+'\n')
     file_object.close()
 
@@ -20,13 +19,14 @@ def extract_pageId(content):
 
     no_duplicate_list = []
     for url in llist:
-        if url not in no_duplicate_list:
-            no_duplicate_list.append(url)
+        page_id = re.findall('[0-9]+',url)[0]
+        if page_id not in no_duplicate_list:
+            no_duplicate_list.append(page_id)
 
     return no_duplicate_list
 
 
 if __name__ == '__main__':
     content = download_page('http://www.acfun.tv')
-    url_list = extract_pageId(content)
-    write_file(url_list)
+    pageId_list = extract_pageId(content)
+    write_file(pageId_list)
