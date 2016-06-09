@@ -17,3 +17,4 @@ class AcfuncommentPipeline(object):
         sql = 'insert into comment(cid,pageID,content,postDate,userID,userName,userImg,count,deep,refCount,ups,downs,nameRed,avatarFrame) values(%d,%d,%s,%s,%d,%s,%s,%d,%d,%d,%d,%d,%d,%d)'
         sql = self.SQLconn.generateQuery(sql,[item['cid'],item['pageID'],item['content'],item['postDate'],item['userID'],item['userName'],item['userImg'],item['count'],item['deep'],item['refCount'],item['ups'],item['downs'],item['nameRed'],item['avatarFrame']])
         self.SQLconn.insert(sql)
+        print item['cid'],' add in database'

@@ -6,7 +6,7 @@ import scrapy
 import codecs
 
 from ..items import *
-
+from ..SQLConnector import *
 
 class Comment(scrapy.Spider):
     name = "comment"
@@ -25,8 +25,19 @@ class Comment(scrapy.Spider):
         file_obj.close()
         return result
 
+    def read_cid(self):
+        sqlConn = SqlConnector(db='acfun')
+        sql = 'select cid from comment'
+        results = sqlConn.select(sql)
+
+        for result in results:
+            cid = int(result[0])
+            self.cids[cid] = 1
+
     def start_requests(self):
         basic_url = "http://www.acfun.tv/comment_list_json.aspx?contentId=%d&currentPage=1"
+        self.cids = {}
+        self.read_cid()
 
         page_Id = self.read_pageId()
         for id in page_Id:
@@ -50,6 +61,10 @@ class Comment(scrapy.Spider):
 
             item = AcfuncommentItem()
             item['cid'] = int(s['data']['commentContentArr'][id]['cid'])
+
+            if item['cid'] in self.cids:
+                continue
+            
             item['pageID'] = str(pageId)
             item['content'] = str(s['data']['commentContentArr'][id]['content']).encode('utf-8')
             item['postDate'] = s['data']['commentContentArr'][id]['postDate']
