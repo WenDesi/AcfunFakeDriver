@@ -27,7 +27,7 @@ class Comment(scrapy.Spider):
 
     def read_cid(self):
         sqlConn = SqlConnector(db='acfun')
-        sql = 'select cid from comment'
+        sql = 'select cid from comment_withuser'
         results = sqlConn.select(sql)
 
         for result in results:
@@ -64,7 +64,7 @@ class Comment(scrapy.Spider):
 
             if item['cid'] in self.cids:
                 continue
-            
+
             item['pageID'] = str(pageId)
             item['content'] = str(s['data']['commentContentArr'][id]['content']).encode('utf-8')
             item['postDate'] = s['data']['commentContentArr'][id]['postDate']
