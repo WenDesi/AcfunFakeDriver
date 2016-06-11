@@ -24,8 +24,8 @@ def write_file(filepath,json_data):
 
 
 if __name__ == '__main__':
-    filepath = 'comment_5000.json'
-    sql = 'select cid,content from comment_withuser limit 4000,1000'
+    filepath = 'comment_20000.json'
+    sql = 'select cid,content from comment_withuser limit 19000,1000'
 
     json_list = read_db(sql)
     json_data = json.dumps(json_list)
